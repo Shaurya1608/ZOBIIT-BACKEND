@@ -1,5 +1,8 @@
 node_modules/
 .env
+.env.local
+.env.production
 database.sqlite
 uploads/
 package-lock.json
+dist/
