@@ -16,7 +16,8 @@ const app = express();
 
 // Security
 app.use(helmet());
-app.use(cors({ origin: process.env.CORS_ORIGIN || '*', credentials: true }));
+const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL, process.env.CORS_ORIGIN].filter(Boolean);
+app.use(cors({ origin: allowedOrigins.length > 0 ? allowedOrigins : '*', credentials: true }));
 app.use(mongoSanitize());
 
 // Rate limiting
