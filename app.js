@@ -16,8 +16,45 @@ const app = express();
 
 // Security
 app.use(helmet());
-const allowedOrigins = [process.env.FRONTEND_URL, process.env.ADMIN_URL, process.env.CORS_ORIGIN].filter(Boolean);
-app.use(cors({ origin: allowedOrigins.length > 0 ? allowedOrigins : '*', credentials: true }));
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL, 
+  process.env.ADMIN_URL, 
+  process.env.CORS_ORIGIN,
+  'https://zobiit.com',
+  'https://www.zobiit.com',
+  'https://zobiit-main-7x1y.vercel.app',
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:5173'
+].filter(Boolean);
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow server-to-server or REST tools (origin is undefined)
+    if (!origin) return callback(null, true);
+    
+    // Check if origin matches allowed list exactly or as a subdomain
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (allowed === '*') return true;
+      try {
+        const allowedHost = new URL(allowed).hostname;
+        const originHost = new URL(origin).hostname;
+        return originHost === allowedHost || originHost.endsWith('.' + allowedHost);
+      } catch {
+        return allowed.includes(origin);
+      }
+    });
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      console.warn(`Blocked CORS request from origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true
+}));
 app.use(mongoSanitize());
 
 // Rate limiting
