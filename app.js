@@ -10,6 +10,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const articleRoutes = require('./routes/articles');
 const propertyRoutes = require('./routes/properties');
 const inquiryRoutes = require('./routes/inquiries');
+const leadRoutes    = require('./routes/leads');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -84,6 +85,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/articles', articleRoutes);
 app.use('/api/properties', propertyRoutes);
 app.use('/api/inquiries', inquiryRoutes);
+app.use('/api/leads', leadRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
