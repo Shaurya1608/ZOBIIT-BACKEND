@@ -25,7 +25,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', upload.single('image'), async (req, res, next) => {
   try {
-    const { title, description, price, priceUnit, priceMax, priceMaxUnit, location, beds, baths, area, tag, category, pricePerSqft, totalSqft } = req.body;
+    const { title, description, price, priceUnit, priceMax, priceMaxUnit, city, location, beds, baths, area, tag, category, pricePerSqft, totalSqft } = req.body;
     let configurations = [];
     if (req.body.configurations) {
       try {
@@ -37,7 +37,7 @@ router.post('/', upload.single('image'), async (req, res, next) => {
       }
     }
     const imageUrl = req.file ? req.file.path : null;
-    const property = await Property.create({ title, description, price, priceUnit, priceMax, priceMaxUnit, location, beds, baths, area, tag, category, imageUrl, pricePerSqft, totalSqft, configurations });
+    const property = await Property.create({ title, description, price, priceUnit, priceMax, priceMaxUnit, city, location, beds, baths, area, tag, category, imageUrl, pricePerSqft, totalSqft, configurations });
     res.status(201).json(property);
   } catch (err) {
     next(err);
@@ -46,7 +46,7 @@ router.post('/', upload.single('image'), async (req, res, next) => {
 
 router.put('/:id', upload.single('image'), async (req, res, next) => {
   try {
-    const { title, description, price, priceUnit, priceMax, priceMaxUnit, location, beds, baths, area, tag, category, existingImageUrl, pricePerSqft, totalSqft } = req.body;
+    const { title, description, price, priceUnit, priceMax, priceMaxUnit, city, location, beds, baths, area, tag, category, existingImageUrl, pricePerSqft, totalSqft } = req.body;
     let configurations = [];
     if (req.body.configurations) {
       try {
@@ -60,7 +60,7 @@ router.put('/:id', upload.single('image'), async (req, res, next) => {
     const imageUrl = req.file ? req.file.path : existingImageUrl || null;
     const property = await Property.findByIdAndUpdate(
       req.params.id,
-      { title, description, price, priceUnit, priceMax, priceMaxUnit, location, beds, baths, area, tag, category, imageUrl, pricePerSqft, totalSqft, configurations },
+      { title, description, price, priceUnit, priceMax, priceMaxUnit, city, location, beds, baths, area, tag, category, imageUrl, pricePerSqft, totalSqft, configurations },
       { new: true }
     );
     if (!property) return res.status(404).json({ error: 'Not found' });

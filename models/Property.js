@@ -7,6 +7,7 @@ const propertySchema = new mongoose.Schema({
   priceUnit:   { type: String, enum: ['Lakh', 'Crore'], default: 'Crore' },
   priceMax:    { type: Number, default: null },
   priceMaxUnit:{ type: String, enum: ['Lakh', 'Crore'], default: 'Crore' },
+  city:        { type: String, default: 'Ranchi' },
   location:    { type: String, required: true },
   beds:        { type: Number, default: 1 },
   baths:       { type: Number, default: 1 },
